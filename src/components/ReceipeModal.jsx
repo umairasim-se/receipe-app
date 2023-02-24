@@ -23,7 +23,7 @@ const style = {
   //   p: 4
 };
 
-const ReceipeModal = ({ open, handleClose, strMealThumb, id }) => {
+const ReceipeModal = ({ open, strMealThumb, id }) => {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const { meals } = useSelector(singleMealSelector);
