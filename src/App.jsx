@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 
 import Header from "./components/Header";
 import store from "./store/store";
