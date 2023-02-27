@@ -66,6 +66,9 @@ const receipeSlice = createSlice({
   reducers: {
     resetFilteredMeals: (state) => {
       state.filteredMeals = "";
+    },
+    resetSingleMeal: (state) => {
+      state.singleMeal = "";
     }
   },
   extraReducers: (builder) => {
@@ -118,6 +121,6 @@ export const mealsSelector = (state) => state.receipe.meals;
 export const filteredMealsSelector = (state) => state.receipe.filteredMeals;
 export const singleMealSelector = (state) => state.receipe.singleMeal;
 
-export const { resetFilteredMeals } = receipeSlice.actions;
+export const { resetFilteredMeals, resetSingleMeal } = receipeSlice.actions;
 
 export default receipeSlice.reducer;

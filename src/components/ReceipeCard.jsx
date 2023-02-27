@@ -1,11 +1,11 @@
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { resetSingleMeal } from "../features/ReceipeSlice";
 import { useCallback, useState } from "react";
 import ReceipeModal from "./ReceipeModal";
+import { useDispatch } from "react-redux";
 
 const cardStyle = {
   margin: "auto",
@@ -34,9 +34,11 @@ const textStyle = {
 
 const ReceipeCard = ({ strMeal, strMealThumb, idMeal }) => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const handleModal = useCallback(() => {
     setOpen((state) => !state);
+    dispatch(resetSingleMeal());
   }, []);
 
   return (

@@ -5,6 +5,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
 import Stack from "@mui/material/Stack";
 import { useDispatch, useSelector } from "react-redux";
 import { singleMealSelector, searchSingleMeal } from "../features/ReceipeSlice";
@@ -20,13 +21,24 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   color: "#000"
-  //   p: 4
+};
+
+const loaderStyle = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "absolute",
+  top: "40%",
+  left: "40%",
+  fontSize: "2rem"
 };
 
 const ReceipeModal = ({ open, strMealThumb, id }) => {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const { meals } = useSelector(singleMealSelector);
+  const { status } = useSelector((state) => state.receipe);
 
   const dispatch = useDispatch();
 
@@ -36,10 +48,10 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
 
   useEffect(() => {
     if (meals) {
-      const ingredients = [];
+      const ing = [];
       for (let i = 1; i <= Object.keys(meals[0]).length; i++) {
         if (meals[0][`strIngredient${i}`]) {
-          ingredients.push({
+          ing.push({
             ingredient: meals[0][`strIngredient${i}`],
             measure: meals[0][`strMeasure${i}`]
           });
@@ -48,14 +60,14 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
         }
       }
 
-      setIngredients([...ingredients]);
+      setIngredients([...ing]);
 
-      const instructions = meals[0]?.strInstructions.split("\r\n");
-      const filteredInstruction = instructions.filter((instruction) => Boolean(instruction));
+      const ins = meals[0]?.strInstructions.split("\r\n");
+      const filteredInstruction = ins.filter((instruction) => Boolean(instruction));
 
       setInstructions([...filteredInstruction]);
     }
-  }, []);
+  }, [meals]);
 
   return (
     <Modal
@@ -63,83 +75,93 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
       aria-describedby="transition-modal-description"
       open={open}
       closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 500
+        }
       }}
     >
       <Fade in={open}>
         <Box sx={style}>
-          <Box sx={{ overflow: "hidden", width: "100%", height: "15rem", position: "relative" }}>
-            <img
-              src={strMealThumb}
-              alt=""
-              loading="lazy"
-              style={{
-                width: "100%",
-                position: "absolute",
-                top: "-5rem",
-                maxWidth: "100%",
-                height: "auto"
-              }}
-            />
-          </Box>
-
-          {meals && (
-            <Stack
-              direction="row"
-              sx={{ width: "100%", height: "390px", overflowY: "auto", position: "relative" }}
-            >
-              <Stack
-                direction="column"
-                sx={{
-                  width: "33.333%",
-                  height: "100%",
-                  marginLeft: "0.5rem"
-                }}
-                xs={3}
-                sm={3}
-                spacing={1}
+          {meals ? (
+            <>
+              <Box
+                sx={{ overflow: "hidden", width: "100%", height: "15rem", position: "relative" }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ m: "0.5rem", fontFamily: "inherit", textAlign: "center" }}
-                >
-                  {" "}
-                  Ingredients{" "}
-                </Typography>
+                <img
+                  src={strMealThumb}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    position: "absolute",
+                    top: "-5rem",
+                    maxWidth: "100%",
+                    height: "auto"
+                  }}
+                />
+              </Box>
 
-                {ingredients?.map((ing) => (
-                  <Stack direction="column">
-                    <Typography variant="h6">{ing.ingredient}</Typography>
-                    <Typography variant="p">{ing.measure}</Typography>
-                  </Stack>
-                ))}
-              </Stack>
               <Stack
-                direction="column"
-                sx={{
-                  width: "66.666%",
-                  height: "100%"
-                }}
-                xs={9}
-                sm={9}
+                direction="row"
+                sx={{ width: "100%", height: "390px", overflowY: "auto", position: "relative" }}
               >
-                <Typography
-                  variant="h5"
-                  sx={{ m: "0.5rem", fontFamily: "inherit", textAlign: "center" }}
+                <Stack
+                  direction="column"
+                  sx={{
+                    width: "33.333%",
+                    height: "100%",
+                    marginLeft: "0.5rem"
+                  }}
+                  xs={3}
+                  sm={3}
+                  spacing={1}
                 >
-                  {meals[0]?.strMeal}
-                </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ m: "0.5rem", fontFamily: "inherit", textAlign: "center" }}
+                  >
+                    {" "}
+                    Ingredients{" "}
+                  </Typography>
 
-                {instructions?.map((ins, i) => (
-                  <Stack direction="column">
-                    <Typography variant="h5"> Step {i + 1}</Typography>
-                    <Typography variant="p">{ins}</Typography>
-                  </Stack>
-                ))}
+                  {ingredients?.map((ing) => (
+                    <Stack direction="column">
+                      <Typography variant="h6">{ing.ingredient}</Typography>
+                      <Typography variant="p">{ing.measure}</Typography>
+                    </Stack>
+                  ))}
+                </Stack>
+                <Stack
+                  direction="column"
+                  sx={{
+                    width: "66.666%",
+                    height: "100%"
+                  }}
+                  xs={9}
+                  sm={9}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ m: "0.5rem", fontFamily: "inherit", textAlign: "center" }}
+                  >
+                    {meals[0]?.strMeal}
+                  </Typography>
+
+                  {instructions?.map((ins, i) => (
+                    <Stack direction="column">
+                      <Typography variant="h5"> Step {i + 1}</Typography>
+                      <Typography variant="p">{ins}</Typography>
+                    </Stack>
+                  ))}
+                </Stack>
               </Stack>
-            </Stack>
+            </>
+          ) : (
+            <Box sx={loaderStyle}>
+              Loading...
+              <CircularProgress size="5rem" />
+            </Box>
           )}
         </Box>
       </Fade>
@@ -147,4 +169,4 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
   );
 };
 
-export default ReceipeModal;
+export default React.memo(ReceipeModal);
