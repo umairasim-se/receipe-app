@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import "../App.css";
+
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -87,7 +89,13 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
           {meals ? (
             <>
               <Box
-                sx={{ overflow: "hidden", width: "100%", height: "15rem", position: "relative" }}
+                sx={{
+                  overflow: "hidden",
+                  width: "100%",
+                  height: "15rem",
+                  position: "relative",
+                  borderBottom: "5px solid #df8550"
+                }}
               >
                 <img
                   src={strMealThumb}
@@ -103,6 +111,7 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
               </Box>
 
               <Stack
+                className="scrollbar"
                 direction="row"
                 sx={{ width: "100%", height: "390px", overflowY: "auto", position: "relative" }}
               >
@@ -160,7 +169,7 @@ const ReceipeModal = ({ open, strMealThumb, id }) => {
           ) : (
             <Box sx={loaderStyle}>
               Loading...
-              <CircularProgress size="5rem" />
+              <CircularProgress size="5rem" color="warning" />
             </Box>
           )}
         </Box>
