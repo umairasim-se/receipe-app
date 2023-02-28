@@ -1,3 +1,3 @@
 # receipe-app
 
-## [https://umairasim2022.github.io/receipe-app/] Demo Link
+## [Demo Link] https://umairasim2022.github.io/receipe-app/
