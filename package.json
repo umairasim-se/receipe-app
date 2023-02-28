@@ -1,6 +1,6 @@
 {
   "name": "receipe-app",
-  "private": false,
+  "private": true,
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://umairasim2022.github.io/receipe-app",
