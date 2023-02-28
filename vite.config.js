@@ -11,5 +11,5 @@ export default defineConfig({
     port: 3000,
     sourcemap: false
   },
-  base: "/vite-deploy-demo/"
+  base: "/receipe-app/"
 });
